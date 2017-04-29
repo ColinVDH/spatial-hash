@@ -1,26 +1,27 @@
 'use strict';
 class SpatialHash{
     constructor(range, cellSize){
-        var bounds = getBounds(range);
+        //var bounds = getBounds(range);
         this.cellSize = cellSize;
         if (range.width%cellSize !== 0 || range.height%cellSize !== 0)
             throw "Exception: width and height must both be divisible by cell size";
     
         this._horizontalCells = range.width/cellSize;
         this._verticalCells = range.height/cellSize;
-        this.hash = { };
+        this.hash = [];
 
-        this._hStart = Math.floor(bounds.left / cellSize);
-        this._hEnd = Math.floor(bounds.right / cellSize)-1;
-        this._vStart = Math.floor(bounds.top / cellSize);
-        this._vEnd = Math.floor(bounds.bottom / cellSize)-1;
+        // this._hStart = 0;
+        // this._hEnd = this._horizontalCells-1;
+        // this._vStart = 0;
+        // this._vEnd = this._verticalCells-1;
+        this.range= range;
 
         var i, j, a;
-        for (i = this._hStart; i <= this._hEnd; i++){
-            a = { };
-            for (j = this._vStart; j <= this._vEnd; j++)
-                a[j] = [];
-            this.hash[i] = a;
+        for (i = 0; i <= this._horizontalCells-1; i++){
+            a = [];
+            for (j = 0; j <= this._verticalCells-1; j++)
+                a.push([]);
+            this.hash.push(a);
         }
 
         this.objectCount = 0;
@@ -32,10 +33,10 @@ class SpatialHash{
         if (!item.range)
             throw "Exception: item has no range object";
         var bounds = getBounds(item.range);
-        var hStart = Math.max(Math.floor(bounds.left / this.cellSize), this._hStart);
-        var hEnd = Math.min(Math.floor(bounds.right / this.cellSize), this._hEnd);
-        var vStart = Math.max(Math.floor(bounds.top / this.cellSize), this._vStart);
-        var vEnd = Math.min(Math.floor(bounds.bottom / this.cellSize), this._vEnd);
+        var hStart = Math.max(~~((bounds.left-this.range.x) / this.cellSize), 0);
+        var hEnd = Math.min(~~((bounds.right-this.range.x) / this.cellSize), this._horizontalCells-1);
+        var vStart = Math.max(~~((bounds.top-this.range.y) / this.cellSize), 0);
+        var vEnd = Math.min(~~((bounds.bottom-this.range.y) / this.cellSize), this._verticalCells-1);
    
         item.__b = {
             hStart: hStart,
@@ -89,10 +90,11 @@ class SpatialHash{
             cellSize = this.cellSize;
 
         // range might be larger than the hash's size itself
-        var hStart = Math.max(Math.floor(bounds.left / cellSize), this._hStart);
-        var hEnd = Math.min(Math.floor(bounds.right / cellSize), this._hEnd);
-        var vStart = Math.max(Math.floor(bounds.top / cellSize), this._vStart);
-        var vEnd = Math.min(Math.floor(bounds.bottom / cellSize), this._vEnd);
+        var hStart = Math.max(~~((bounds.left-this.range.x) / this.cellSize), 0);
+        var hEnd = Math.min(~~((bounds.right-this.range.x) / this.cellSize), this._horizontalCells-1);
+        var vStart = Math.max(~~((bounds.top-this.range.y) / this.cellSize), 0);
+        var vEnd = Math.min(~~((bounds.bottom-this.range.y) / this.cellSize), this._verticalCells-1);
+   
 
         var i , j, k, l, m, o = [], p = [];
         for (i = hStart; i <= hEnd; i++) {
@@ -124,8 +126,14 @@ class SpatialHash{
     find(range, callback) {
         return this.__srch(range, null, callback, false);
     }
-
+    print(){
+        var i, j;
+        for (i = 0; i <= this._horizontalCells-1; i++){
+            console.log(this.hash[i]);
+        }
+    }  
 }
+
 
 
 function intersects(a, b) {
