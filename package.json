@@ -1,0 +1,33 @@
+{
+    "author": "Colin Vandenhof",
+    "license": "Apache-2.0",
+
+    "name": "spatial-hash",
+    "description": "Spatial hash package for node.js",
+
+    "version": "0.0.1",
+    "main": "index",
+
+    "keywords": [
+        "spatial",
+        "hash",
+        "collision"
+        "map",
+        "spatial-hash",
+        "collision-detection",
+        "2d"
+    ],
+
+    "dependencies": {},
+    "engines": {
+        "node": "*"
+    },
+
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ColinVDH/spatial-hash"
+    },
+    "bugs": {
+        "url": "https://github.com/ColinVDH/spatial-hash/issues"
+    }
+}
