@@ -9,11 +9,6 @@ class SpatialHash{
         this._horizontalCells = range.width/cellSize;
         this._verticalCells = range.height/cellSize;
         this.hash = [];
-
-        // this._hStart = 0;
-        // this._hEnd = this._horizontalCells-1;
-        // this._vStart = 0;
-        // this._vEnd = this._verticalCells-1;
         this.range= range;
 
         var i, j, a;
@@ -47,10 +42,6 @@ class SpatialHash{
         };
 
         var i, j;
-        console.log(hStart);
-        console.log(hEnd);
-        console.log(vStart);
-        console.log(vEnd);
         for (i = hStart; i <= hEnd; i++) {
             for (j = vStart; j <= vEnd; j++)
                 this.hash[i][j].push(item);
@@ -153,116 +144,4 @@ function getBounds(range) {
 }
 
 module.exports = SpatialHash;
-
-// SpatialHash.prototype.init = function() {
-    
-// };
-
-// SpatialHash.prototype.insert = function(item) {
-//     if (!item.range) return;
-//     var b = getBounds(item.range),
-//         cellSize = this.cellSize;
-
-//     var hStart = Math.max(~~(b.left / cellSize), this._hStart);
-//     var hEnd = Math.min(~~(b.right / cellSize), this._hEnd);
-//     var vStart = Math.max(~~(b.top / cellSize), this._vStart);
-//     var vEnd = Math.min(~~(b.bottom / cellSize), this._vEnd);
-//     item.__b = {
-//         hStart: hStart,
-//         hEnd: hEnd,
-//         vStart: vStart,
-//         vEnd: vEnd,
-//         id: this._nId++
-//     };
-
-//     var i = hStart, j;
-//     for (; i <= hEnd; i++) {
-//         j = vStart;
-//         for (; j <= vEnd; j++)
-//             this.hash[i][j].push(item);
-//     }
-
-//     if (this.itemCount++ >= 9e15)
-//         throw new Error("SpatialHash: To ensure pure integer stability it must not have more than 9E15 (900 000 000 000 000) objects");
-//     else if (this._nId > 9e15 - 1)
-//         this._nId = -9e15;
-// };
-
-// SpatialHash.prototype.remove = function(item) {
-//     if (!item.__b) return;
-
-//     var hStart = item.__b.hStart;
-//     var hEnd = item.__b.hEnd;
-//     var vStart = item.__b.vStart;
-//     var vEnd = item.__b.vEnd;
-
-//     var i = hStart, j, k;
-//     for (; i <= hEnd; i++) {
-//         j = vStart;
-//         for (; j <= vEnd; j++) {
-//             k = this.hash[i][j].indexOf(item);
-//             if (k !== -1) this.hash[i][j].splice(k, 1);
-//         }
-//     }
-//     if (!(delete item.__b)) item.__b = undefined;
-//     this.itemCount--;
-// };
-
-// SpatialHash.prototype.update = function(item) {
-//     this.remove(item);
-//     this.insert(item);
-// };
-
-// SpatialHash.prototype.__srch = function(range, selector, callback, returnOnFirst) {
-//     var b = getBounds(range),
-//         cellSize = this.cellSize;
-
-//     // range might be larger than the hash's size itself
-//     var hStart = Math.max(~~(b.left / cellSize), this._hStart);
-//     var hEnd = Math.min(~~(b.right / cellSize), this._hEnd);
-//     var vStart = Math.max(~~(b.top / cellSize), this._vStart);
-//     var vEnd = Math.min(~~(b.bottom / cellSize), this._vEnd);
-
-//     var i = hStart, j, k, l, m, o = [], p = [];
-//     for (; i <= hEnd; i++) {
-//         j = vStart;
-//         for (; j <= vEnd; j++) {
-//             k = this.hash[i][j];
-//             l = k.length;
-//             m = 0;
-//             for (; m < l; m++)
-//                 if (intersects(k[m].range, range) && p.indexOf(k[m].__b.id) === -1) {
-//                     p.push(k[m].__b.id);
-//                     if (selector) if (!selector(k[m])) continue;
-//                     if (callback) callback(k[m]);
-//                     if (returnOnFirst) return true;
-//                     o.push(k[m]);
-//                 }
-//         }
-//     }
-//     if (returnOnFirst) return false;
-//     return o;
-// };
-
-// SpatialHash.prototype.any = function(range) {
-//     return this.__srch(range, null, null, true);
-// };
-
-// SpatialHash.prototype.query = function(range, selector) {
-//     return this.__srch(range, selector, null, false);
-// };
-
-// SpatialHash.prototype.find = function(range, callback) {
-//     return this.__srch(range, null, callback, false);
-// };
-
-// function intersects(a, b) {
-//     var xa = a.x - a.w, ya = a.y - a.h, wa = a.w * 2, ha = a.h * 2,
-//         xb = b.x - b.w, yb = b.y - b.h, wb = b.w * 2, hb = b.h * 2;
-
-//     return xa <= xb + wb
-//         && xa + wa >= xb
-//         && ya <= yb + hb
-//         && ya + ha >= yb;
-// }
 
