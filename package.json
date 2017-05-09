@@ -5,17 +5,16 @@
     "name": "spatial-hash",
     "description": "Spatial hash package for node.js",
 
-    "version": "0.0.1",
+    "version": "0.0.4",
     "main": "index",
 
     "keywords": [
         "spatial",
         "hash",
-        "collision"
+        "collision",
         "map",
         "spatial-hash",
-        "collision-detection",
-        "2d"
+        "collision-detection"
     ],
 
     "dependencies": {},

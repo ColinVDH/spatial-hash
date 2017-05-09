@@ -1,7 +1,7 @@
 'use strict';
 class SpatialHash{
     constructor(range, cellSize){
-        //var bounds = getBounds(range);
+        //var getBounds = getBounds(range);
         this.cellSize = cellSize;
         if (range.width%cellSize !== 0 || range.height%cellSize !== 0)
             throw "Exception: width and height must both be divisible by cell size";
@@ -12,16 +12,16 @@ class SpatialHash{
         this.range= range;
 
         var i, j, a;
-        for (i = 0; i <= this._horizontalCells-1; i++){
+        for (i = 0; i <= this._verticalCells-1; i++){
             a = [];
-            for (j = 0; j <= this._verticalCells-1; j++)
+            for (j = 0; j <= this._horizontalCells-1; j++)
                 a.push([]);
             this.hash.push(a);
         }
 
-        this.objectCount = 0;
+        this.itemCount = 0;
         this.cellCount = this._horizontalCells * this._verticalCells;
-        this._id = -9e15; //max number of objects
+        this._id = -9e15; //max number of items
     }
 
     insert(item) {
@@ -42,13 +42,13 @@ class SpatialHash{
         };
 
         var i, j;
-        for (i = hStart; i <= hEnd; i++) {
-            for (j = vStart; j <= vEnd; j++)
+        for (i = vStart; i <= vEnd; i++) {
+            for (j = hStart; j <= hEnd; j++)
                 this.hash[i][j].push(item);
         }
 
-        if (this.objectCount++ >= 9e15)
-            throw "Exception: more than 9E15 (900 000 000 000 000) objects";
+        if (this.itemCount++ >= 9e15)
+            throw "Exception: more than 9E15 (900 000 000 000 000) items";
         else if (this._id > 9e15 - 1)
             this._id = -9e15;
     }
@@ -61,20 +61,38 @@ class SpatialHash{
         var vEnd = item.__b.vEnd;
 
         var i, j, k;
-        for (i = hStart; i <= hEnd; i++) {
-            for (j = vStart; j <= vEnd; j++) {
+        for (i = vStart; i <= vEnd; i++) {
+            for (j = hStart; j <= hEnd; j++) {
                 k = this.hash[i][j].indexOf(item);
                 if (k !== -1) this.hash[i][j].splice(k, 1);
             }
         }
         if (!(delete item.__b)) item.__b = undefined;
-        this.objectCount--;
+        this.itemCount--;
+    }
+
+    removeAll(){
+        this.hash = [];
+        var i, j, a;
+        for (i = 0; i <= this._verticalCells-1; i++){
+            a = [];
+            for (j = 0; j <= this._horizontalCells-1; j++)
+                a.push([]);
+            this.hash.push(a);
+        }
+        this.itemCount = 0;
     }
 
     update(item) {
         this.remove(item);
         this.insert(item);
     }
+
+    // cellContents(x,y){
+    //     let i = ~~((y-this.range.y) / this.cellSize)
+    //     let j = ~~((x-this.range.x) / this.cellSize)
+    //     return this.hash[i][j];
+    // }
 
     __srch(range, selector, callback, returnOnFirst) {
         var bounds = getBounds(range),
@@ -88,8 +106,8 @@ class SpatialHash{
    
 
         var i , j, k, l, m, o = [], p = [];
-        for (i = hStart; i <= hEnd; i++) {
-            for (j = vStart; j <= vEnd; j++) {
+        for (i = vStart; i <= vEnd; i++) {
+            for (j = hStart; j <= hEnd; j++) {
                 k = this.hash[i][j];
                 l = k.length;
                 for (m = 0; m < l; m++)
@@ -117,12 +135,25 @@ class SpatialHash{
     find(range, callback) {
         return this.__srch(range, null, callback, false);
     }
-    print(){
-        var i, j;
-        for (i = 0; i <= this._horizontalCells-1; i++){
-            console.log(this.hash[i]);
-        }
-    }  
+
+    // toString(){
+    //     var str=" ";
+    //     var i, j;
+    //     for (i = 0; i <= this._horizontalCells-1; i++) 
+    //         str+=" "+i.toString()+" ";
+    //     str+="\n";
+    //     for (j = 0; j <= this._verticalCells-1; j++){
+    //         str+=j.toString();
+    //         for (i=0; i<=this._horizontalCell-1; i++){
+    //             if (this.hash[i][j]===[]) str+=" -- ";
+    //             var z=0;
+    //             for (;z<this.hash[i][j].length;z++)
+    //                 str+="O,";
+    //         }    
+    //         str+="\n"
+    //     }
+    //     return str;
+    // }
 }
 
 

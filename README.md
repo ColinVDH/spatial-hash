@@ -55,7 +55,7 @@ The amount of items currently in the map.
 
 The maximum item count is 900 000 000 000 000.
 
-#### `.hashes`
+#### `.hash`
 
 The map. See remarks for more info.
 
