@@ -88,12 +88,6 @@ class SpatialHash{
         this.insert(item);
     }
 
-    // cellContents(x,y){
-    //     let i = ~~((y-this.range.y) / this.cellSize)
-    //     let j = ~~((x-this.range.x) / this.cellSize)
-    //     return this.hash[i][j];
-    // }
-
     __srch(range, selector, callback, returnOnFirst) {
         var bounds = getBounds(range),
             cellSize = this.cellSize;
@@ -135,25 +129,6 @@ class SpatialHash{
     find(range, callback) {
         return this.__srch(range, null, callback, false);
     }
-
-    // toString(){
-    //     var str=" ";
-    //     var i, j;
-    //     for (i = 0; i <= this._horizontalCells-1; i++) 
-    //         str+=" "+i.toString()+" ";
-    //     str+="\n";
-    //     for (j = 0; j <= this._verticalCells-1; j++){
-    //         str+=j.toString();
-    //         for (i=0; i<=this._horizontalCell-1; i++){
-    //             if (this.hash[i][j]===[]) str+=" -- ";
-    //             var z=0;
-    //             for (;z<this.hash[i][j].length;z++)
-    //                 str+="O,";
-    //         }    
-    //         str+="\n"
-    //     }
-    //     return str;
-    // }
 }
 
 
