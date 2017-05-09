@@ -1,6 +1,6 @@
 # spatial-hash
 spatial hash package for node.js. Forked from https://www.npmjs.com/package/spatialhash-2d
-
+![npm package](https://nodei.co/npm/spatial-hash.png?downloads=true&downloadRank=true&stars=true)
 
 ### item requirements
 Example of an item:
